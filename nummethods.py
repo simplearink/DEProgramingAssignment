@@ -10,10 +10,17 @@ class Grid():
         self.fill_x()
 
     def fill_x(self):
+        """
+        Method that fills x array from x0 to X with delta step
+        """
         for i in range(1, self.steps_amt):
             self.x.append(self.x[i-1]+self.delta)
 
     def solution(self):
+        """
+        Method that solves DE
+
+        """
         pass
 
 
@@ -24,6 +31,10 @@ class Exact(Grid):
         self.solution()
 
     def calculate_const(self):
+        """
+        Method that calculates constant depending on IVP
+
+        """
         self.const = (self.y[0] + self.x[0] - 1)*math.exp(-self.x[0])
 
     def solution(self):
@@ -38,6 +49,12 @@ class Euler(Grid):
         self.solution()
 
     def func(self, x, y):
+        """
+        Method that calculates value of right side of equation
+        :param x: x value
+        :param y: y value
+        :return: value of right side of equation
+        """
         f = -y - x
         return f
 
@@ -81,5 +98,8 @@ class Error:
         self.calculate_error()
 
     def calculate_error(self):
+        """
+        Method that calculates error
+        """
         for i in range(len(self.target.y)):
             self.error.append(abs(self.object.y[i] - self.target.y[i]))

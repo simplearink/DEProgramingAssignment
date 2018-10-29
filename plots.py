@@ -8,6 +8,12 @@ class Plot:
         self.figure.suptitle(title)
 
     def build_graph(self, x, y, method):
+        """
+        Method that builds a graph of solutions with certain label
+        :param x: x values
+        :param y: function values
+        :param method: name of DE solving method
+        """
         graph_plane = self.figure.add_subplot(111)
         graph_plane.set_xlabel('x')
         graph_plane.set_ylabel('y')
@@ -15,6 +21,13 @@ class Plot:
         graph_plane.legend(loc='upper right')
 
     def build_local_err_graph(self, x, y, method):
+        """
+        Method that builds a graph of local errors with certain label
+        :param x: x values
+        :param y: local error values
+        :param method: name of DE solving method
+
+        """
         graph_plane = self.figure.add_subplot(111)
         graph_plane.set_xlabel('x')
         graph_plane.set_ylabel('local error')
@@ -22,6 +35,13 @@ class Plot:
         graph_plane.legend(loc='upper right')
 
     def build_error_graph(self, method, x, y):
+        """
+        Method that build dependence of max error from N graph
+        :param method: name of DE solving method
+        :param x: N values
+        :param y: Max. error values
+
+        """
         graph_plane = self.figure.add_subplot(111)
         graph_plane.set_xlabel('N')
         graph_plane.set_ylabel('Max. error')
@@ -49,6 +69,10 @@ class ProblemSolver:
         self.calculate_local_errs()
 
     def solve_equation(self):
+        """
+        Method that solves DE using 4 different methods
+
+        """
         exact = Exact(self.steps_amt, self.x0, self.y0, self.limit)
         euler = Euler(self.steps_amt, self.x0, self.y0, self.limit)
         improved_euler = ImprovedEuler(self.steps_amt, self.x0, self.y0, self.limit)
@@ -60,6 +84,10 @@ class ProblemSolver:
         self.solutions['runge_kutta'] = rk
 
     def build_plot(self):
+        """
+        Method that builds full solution plot
+        :return: plot
+        """
         plots = Plot('Graphs')
 
         plots.build_graph(self.solutions['exact'].x, self.solutions['exact'].y, 'Exact')
@@ -70,6 +98,10 @@ class ProblemSolver:
         return plots
 
     def calculate_local_errs(self):
+        """
+        Method that calculates full local errors plot
+        :return: plot
+        """
         exact = Error(self.solutions['exact'], self.solutions['exact']).error
         euler = Error(self.solutions['exact'], self.solutions['euler']).error
         improved_euler = Error(self.solutions['exact'], self.solutions['improved_euler']).error
@@ -81,11 +113,20 @@ class ProblemSolver:
         self.errors['runge_kutta'] = rk
 
     def calculate_max_err(self, method):
+        """
+        Method that calculates maximum error for particular method
+        :param method: name of method
+        :return: maximum error for particular method
+        """
         max_err = max(self.errors[method])
 
         return max_err
 
     def build_local_error_graph(self):
+        """
+         Method that builds full local errors plot
+        :return: plot
+        """
         plots = Plot('Local errors')
 
         x = self.solutions['exact'].x
@@ -111,6 +152,11 @@ class ErrorAnalysis:
             self.N.append(i)
 
     def generate_error_array(self, method):
+        """
+        Method that generates an array of max error according to N value
+        :param method: name of method
+
+        """
         self.errors[method] = []
 
         for i in self.N:
@@ -118,6 +164,10 @@ class ErrorAnalysis:
             self.errors[method].append(error)
 
     def build_err_graph(self):
+        """
+        Method that builds full dependence of max error from N graph
+        :return:
+        """
         plots = Plot('Max Error from N')
 
         plots.build_error_graph('Euler', self.N, self.errors['euler'])
