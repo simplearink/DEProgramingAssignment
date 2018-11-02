@@ -58,6 +58,7 @@ class DEApplication(Tk):
 
         self.resize_button = Button(self, text="Resize", command=self.resize_handler)
 
+
     def build_graphs(self):
         """
         Method that builds graphs of solutions(different methods are used),
@@ -124,8 +125,8 @@ class DEApplication(Tk):
             n1 = int(self.N_from_entry.get())
             n2 = int(self.N_to_entry.get())
             n = int(self.N.get())
-            if n1 > n2:
-                raise ValueError("From value > to value! Try again!")
+            if n1 >= n2:
+                raise ValueError("From value >= to value! Try again!")
             if (n1 > n) or (n2 > n):
                 raise ValueError("Not existing N. Try again!")
             self.err_of_n(int(self.N_from_entry.get()), int(self.N_to_entry.get()))
